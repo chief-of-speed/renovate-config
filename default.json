@@ -1,13 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":enableVulnerabilityAlerts", "security:minimumReleaseAgeNpm"],
+  "extends": ["config:recommended", ":enableVulnerabilityAlerts"],
   "labels": ["dependencies"],
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "internalChecksFilter": "strict",
   "packageRules": [
     {
       "description": "Automerge minor and patch, never pre-1.0 (0.x may break on any release)",
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
+    },
+    {
+      "description": "Update types that carry no release timestamp (the package manager or Renovate decides them) skip the wait",
+      "matchUpdateTypes": ["lockFileMaintenance", "replacement", "pin", "bump", "lockfileUpdate", "rollback"],
+      "minimumReleaseAge": null
     }
   ]
 }
